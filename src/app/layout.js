@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import MovieHeader from "@/Components/MovieHeader";
 import Navbar from "@/Components/Navbar";
+import SearchBox from "@/Components/SearchBox";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <MovieHeader />
         <Navbar />
+        <SearchBox />
         {children}
       </body>
     </html>
