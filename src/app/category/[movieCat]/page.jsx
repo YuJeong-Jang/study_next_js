@@ -1,6 +1,7 @@
 import MovieDetailsPage from "@/app/movie/details/[movieId]/page";
 import MovieCard from "@/Components/MovieCard";
 import MovieDetails from "@/Components/MovieDetails";
+import MovieList from "@/Components/MovieList";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -35,11 +36,7 @@ export default async function MovieCategoryPage({ params }) {
     const movies = json.results; // 데이터 확보
     // console.log(movies);/
     return (
-      <div className="flex flex-wrap justify-center">
-        {movies.map((movie) => {
-          return <MovieCard movie={movie} key={movie.title} />;
-        })}
-      </div>
+      <MovieList movies={movies}/>
     );
   } catch (e) {
     throw Error(e);
