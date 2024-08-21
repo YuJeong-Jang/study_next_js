@@ -6,9 +6,7 @@ import { redirect } from "next/navigation";
 
 // next14에서 작성한 모든 컴포넌트 (App 디렉토리 내의 컴포넌트)
 export default async function Home() {
-
-redirect('/category/now_playing')
-
+  redirect("/category/now_playing");
 
   // // 1. imdb에서 데이터 페칭 수행 --> movie 데이터 json 파일 응담
   // // 2. json.results --> []이 응답 .. 20개의 영화 데이터를 포함
@@ -18,7 +16,7 @@ redirect('/category/now_playing')
   //   headers: {
   //     accept: "application/json",
   //     Authorization:
-  //       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MDM3YTAwN2ZhMmE5MzM1NTdmNWYyMzBlMGYyZTYwZiIsIm5iZiI6MTcyNDEyMTgzNS45Mzg1OTEsInN1YiI6IjY0OTkzOGVkNmY0M2VjMDBjNWM3MmY4NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lKLi0NyV3qV0XNsDaZbeHw6IWrAjDam7TWu0nq9wxnc",
+  //        `Bearer ${process.env.API_KEY}`,
   //   },
   // };
 
