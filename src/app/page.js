@@ -3,9 +3,8 @@ import Image from "next/image";
 
 export default async function Home() {
   const result = await fetch("http://localhost:3000/api");
-  console.log("result",result)
   const todos = await result.json();
-  console.log("todos",todos)
+
   return (
     <div>
       <form className="flex items-start flex-col gap-2 w-[80%] mt-24 px-2 mx-auto">
@@ -45,9 +44,9 @@ export default async function Home() {
             </tr>
           </thead>
           <tbody>
-            {/* {todos.map((todo) => {
+            {todos.map((todo) => {
               return <TodoItem todo={todo} />;
-            })} */}
+            })}
           </tbody>
         </table>
       </div>
