@@ -1,21 +1,79 @@
+"use client" // 이벤트를 이용하게 되면 선언해야함
 import TodoItem from "@/Components/TodoItem";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 
-export default async function Home() {
-  const result = await fetch("http://localhost:3000/api");
-  const todos = await result.json();
+export default function Home() {
+  // 내부데이터를 저장하기 위해서 state로 처리
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+  });
+  const [todos, setTodos] = useState([]);
 
+  // 최초로 로딩 됐을때 콜백되는 함수
+  useEffect(() => {
+    fetchAllTodos();
+  }, []);
+
+  const fetchAllTodos = async () => {
+    const result = await fetch("http://localhost:3000/api");
+    const todos = await result.json();
+    console.log(todos);
+    setTodos(todos)
+  };
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    await fetch("http://localhost:3000/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    await fetchAllTodos();
+    setFormData({ title: "", description: "" });
+  };
+  const onChangeHandler = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setFormData((form) => ({ ...form, [name]: value }));
+  };
+
+  const onDeleteHandler = async (mongoId) => {
+    // await fetch(`http://localhost:3000/api?mongoId=${mongoId}`, {
+    //   method: "DELETE",
+    // }).then((res) => res.json());
+    // await fetchAllTodos();
+    // console.log("onDeleteHandler");
+  };
+  const onCompleteHandler = async (mongoId) => {
+    // await fetch(`http://localhost:3000/api?mongoId=${mongoId}`, {
+    //   method: "PUT",
+    // }).then((res) => res.json());
+    // await fetchAllTodos();
+    // console.log("onCompleteHandler");
+  };
   return (
     <div>
-      <form className="flex items-start flex-col gap-2 w-[80%] mt-24 px-2 mx-auto">
+      <form
+        className="flex items-start flex-col gap-2 w-[80%] mt-24 px-2 mx-auto"
+        onSubmit={onSubmitHandler}
+      >
         <input
           type="text"
+          name="title"
           className="px-3 py-2 border-2 w-full"
           placeholder="input"
+          value={formData.title}
+          onChange={onChangeHandler}
         />
         <textarea
           className="px-3 py-2 border-2 w-full"
           placeholder="textarea"
+          name="description"
+          value={formData.description}
+          onChange={onChangeHandler}
         ></textarea>
         <button className="bg-orange-600 py-3 px-11 text-white rounded-xl">
           Add Todo
@@ -44,8 +102,18 @@ export default async function Home() {
             </tr>
           </thead>
           <tbody>
-            {todos.map((todo) => {
-              return <TodoItem todo={todo} />;
+            {todos.map((todo, index) => {
+              return (
+                <TodoItem
+                  key={index}
+                  id={index}
+                  mongoId={todo._id}
+                  title={todo.title}
+                  description={todo.description}
+                  onDeleteHandler={onDeleteHandler}
+                  onCompleteHandler={onCompleteHandler}
+                />
+              );
             })}
           </tbody>
         </table>
