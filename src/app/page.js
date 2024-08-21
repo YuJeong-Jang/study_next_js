@@ -18,12 +18,10 @@ export default function Home() {
   const fetchAllTodos = async () => {
     const result = await fetch("http://localhost:3000/api");
     const todos = await result.json();
-    console.log(todos);
     setTodos(todos)
   };
-
   const onSubmitHandler = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     await fetch("http://localhost:3000/api", {
       method: "POST",
       headers: {
@@ -39,19 +37,20 @@ export default function Home() {
     const value = e.target.value;
     setFormData((form) => ({ ...form, [name]: value }));
   };
-
+console.log(todos)
   const onDeleteHandler = async (mongoId) => {
-    // await fetch(`http://localhost:3000/api?mongoId=${mongoId}`, {
-    //   method: "DELETE",
-    // }).then((res) => res.json());
-    // await fetchAllTodos();
+    console.log(mongoId)
+    await fetch(`http://localhost:3000/api?mongoId=${mongoId}`, {
+      method: "DELETE",
+    }).then((res) => res.json());
+    await fetchAllTodos();
     // console.log("onDeleteHandler");
   };
   const onCompleteHandler = async (mongoId) => {
-    // await fetch(`http://localhost:3000/api?mongoId=${mongoId}`, {
-    //   method: "PUT",
-    // }).then((res) => res.json());
-    // await fetchAllTodos();
+    await fetch(`http://localhost:3000/api?mongoId=${mongoId}`, {
+      method: "PUT",
+    }).then((res) => res.json());
+    await fetchAllTodos();
     // console.log("onCompleteHandler");
   };
   return (
@@ -106,10 +105,10 @@ export default function Home() {
               return (
                 <TodoItem
                   key={index}
-                  id={index}
                   mongoId={todo._id}
                   title={todo.title}
                   description={todo.description}
+                  isCompleted={todo.isCompleted}
                   onDeleteHandler={onDeleteHandler}
                   onCompleteHandler={onCompleteHandler}
                 />
